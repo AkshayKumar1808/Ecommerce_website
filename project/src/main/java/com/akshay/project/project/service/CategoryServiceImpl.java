@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.akshay.project.project.Repository.CategoriesRepository;
+import com.akshay.project.project.exception.RecordNotFoundException;
 import com.akshay.project.project.model.Categories;
 
 @Service
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements CRUDOperation<Categories> {
 
 		log.info("find the category by Id :{}", ID);
 		Categories existingCategory = categoriesRepository.findById(ID)
-				.orElseThrow(() -> new RuntimeException("Category is not found ID " + ID));
+				.orElseThrow(() -> new RecordNotFoundException("Category is not found ID " + ID));
 		existingCategory.setCategoryName(model.getCategoryName());
 		existingCategory.setActive(model.isActive());
 
@@ -47,7 +48,7 @@ public class CategoryServiceImpl implements CRUDOperation<Categories> {
 	public Categories getModel(Long Id) {
 
 		Categories category = categoriesRepository.findById(Id)
-				.orElseThrow(() -> new RuntimeException("Category is not found Id :" + Id));
+				.orElseThrow(() -> new RecordNotFoundException("Category is not found Id :" + Id));
 		log.info("categoty found send back");
 		return category;
 	}
@@ -55,7 +56,7 @@ public class CategoryServiceImpl implements CRUDOperation<Categories> {
 	@Override
 	public Categories deleteModel(Long Id) {
 		Categories category = categoriesRepository.findById(Id)
-				.orElseThrow(() -> new RuntimeException("Category is not found Id :" + Id));
+				.orElseThrow(() -> new RecordNotFoundException("Category is not found Id :" + Id));
 		log.info("category delete successfully");
 		category.setActive(false);
 		Categories deleteCat = categoriesRepository.save(category);
