@@ -9,4 +9,5 @@ public interface CRUDOperation<T> {
 	T getModel(Long Id);
 
 	T deleteModel(Long Id);
+
 }
