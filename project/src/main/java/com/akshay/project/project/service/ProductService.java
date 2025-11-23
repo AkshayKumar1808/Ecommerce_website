@@ -1,5 +1,8 @@
 package com.akshay.project.project.service;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,6 +102,15 @@ public class ProductService implements CRUDOperation<Products> {
 		Products newProduct = productRepository.save(product);
 		log.info("Product deletd successfully with productId :{}", product.getProductId());
 		return newProduct;
+	}
+
+	public List<Products> getActiveProducts() {
+		List<Products> products = productRepository.findByActiveTrue();
+		if (products.isEmpty()) {
+			log.warn("products are empty");
+			return Collections.emptyList();
+		}
+		return products;
 	}
 
 }
