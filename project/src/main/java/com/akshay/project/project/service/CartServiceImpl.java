@@ -1,7 +1,6 @@
 package com.akshay.project.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class CartServiceImpl implements CaertService {
+public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CartMapper cartMapper;
-	
+
 	private UserRepository userRepository;
 
 	private ProductRepository productRepository;
@@ -90,8 +89,19 @@ public class CartServiceImpl implements CaertService {
 			log.info("new CartItem saved successfully");
 		}
 
-		Cart updatedCart=cartRepository.findById(cart.getCartId()).get();
+		Cart updatedCart = cartRepository.findById(cart.getCartId()).get();
 		return cartMapper.toDTO(updatedCart);
+	}
+
+	@Override
+	public CartDTO getProductOfCart(Long cartId) {
+
+		log.info("validate the cartId :{}", cartId);
+		Cart cart = cartRepository.findById(cartId).orElseThrow(() -> {
+			log.warn("cart is not found of cartId :{}", cartId);
+			return new RecordNotFoundException("cart not found");
+		});
+		return cartMapper.toDTO(cart);
 	}
 
 }
