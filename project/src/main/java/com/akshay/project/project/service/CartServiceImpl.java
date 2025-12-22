@@ -10,12 +10,13 @@ import com.akshay.project.project.Repository.ProductRepository;
 import com.akshay.project.project.Repository.UserRepository;
 import com.akshay.project.project.dto.AddToCartRequest;
 import com.akshay.project.project.dto.CartDTO;
+import com.akshay.project.project.exception.RecordNotFoundException;
 import com.akshay.project.project.model.Cart;
 import com.akshay.project.project.model.CartItem;
 import com.akshay.project.project.model.CartItemId;
 import com.akshay.project.project.model.Products;
 import com.akshay.project.project.model.User;
-import com.akshay.project.project.exception.RecordNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -101,6 +102,50 @@ public class CartServiceImpl implements CartService {
 			log.warn("cart is not found of cartId :{}", cartId);
 			return new RecordNotFoundException("cart not found");
 		});
+		return cartMapper.toDTO(cart);
+
+	}
+
+	@Override
+	public CartDTO updateCartProduct(Long cartId, Long productId, int quantity) {
+		log.info("validating the cart of Id :{}", cartId);
+
+		Cart existngCart = cartRepository.findById(cartId).orElseThrow(() -> {
+			log.warn("Cart is not present with CartId :{}", cartId);
+			return new RecordNotFoundException("cart not found");
+		});
+
+		// cart has cartItem and cartItem has product and to know the product that was
+		// send is a valid
+		// the user send the product which is available inside its cart
+
+		CartItemId cartItemId = new CartItemId(existngCart.getCartId(), productId);
+
+		log.info("existance of composite key :{}", cartItemId.toString());
+
+		CartItem cartItem = cartItemRepository.findById(cartItemId).orElse(null);
+
+		log.info("CartItem are :{}", cartItem);
+		if (cartItem != null && cartItem.getQuantity() != 0) {
+			log.info("update the quantity of product");
+			cartItem.setQuantity(cartItem.getQuantity() + quantity);
+			cartItemRepository.save(cartItem);
+			log.info("cartItem saved successfully");
+		} else {
+			throw new RecordNotFoundException("cartItem not found");
+		}
+		return cartMapper.toDTO(existngCart);
+	}
+
+	@Override
+	public CartDTO deleteCart(Long cartId) {
+		log.info("delete the cart for CartId :{}", cartId);
+		Cart cart = cartRepository.findById(cartId).orElseThrow(() -> {
+			log.warn("Cart is not present with CartId :{}", cartId);
+			return new RecordNotFoundException("cart not found");
+		});
+		cartRepository.deleteById(cartId);
+		log.info("cart delete successfully");
 		return cartMapper.toDTO(cart);
 	}
 
