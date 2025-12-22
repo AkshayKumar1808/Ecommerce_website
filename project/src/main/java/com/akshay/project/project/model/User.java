@@ -1,5 +1,6 @@
 package com.akshay.project.project.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +37,7 @@ public class User extends EntityBase {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Address> addresses;
+	private List<Address> addresses=new ArrayList<>();
 
 	public boolean isActive() {
 		return active;
