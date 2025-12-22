@@ -1,5 +1,7 @@
 package com.akshay.project.project.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class RecordNotFoundException extends RuntimeException {
 
 	/**@apiNote
@@ -12,4 +14,5 @@ public class RecordNotFoundException extends RuntimeException {
 	public RecordNotFoundException(String msg) {
 		super(msg);
 	}
+
 }
