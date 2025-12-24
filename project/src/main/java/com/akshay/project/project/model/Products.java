@@ -43,4 +43,7 @@ public class Products extends EntityBase {
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartItem> cartProducts = new ArrayList<>();
+
+	@OneToMany(mappedBy = "product", orphanRemoval = true)
+	private List<OrderItem> orderItem = new ArrayList<>();
 }

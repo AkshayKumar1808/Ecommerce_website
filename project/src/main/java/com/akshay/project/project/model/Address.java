@@ -1,8 +1,13 @@
 package com.akshay.project.project.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.akshay.project.project.enums.AddressTypes;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -43,6 +48,10 @@ public class Address {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
 
 	public Long getAddressId() {
 		return addressId;

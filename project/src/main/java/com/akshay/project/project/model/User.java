@@ -37,7 +37,11 @@ public class User extends EntityBase {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Address> addresses=new ArrayList<>();
+	private List<Address> addresses = new ArrayList<>();
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
 
 	public boolean isActive() {
 		return active;
