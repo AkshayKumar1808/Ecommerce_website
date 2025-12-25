@@ -93,14 +93,24 @@ public class OrderServiceImpl implements OrderService {
 			orderItem.setQuantity(newQuantity);
 
 			// Update total: remove old item total and add new item total
-			
+
 			double newItemTotal = product.getPrice() * newQuantity;
 
-			order.setTotalAmount(order.getTotalAmount()  + newItemTotal);
+			order.setTotalAmount(order.getTotalAmount() + newItemTotal);
 
 			orderItemRepository.save(orderItem);
 		}
 
+		return orderMapper.getOrderDetail(order);
+	}
+
+	@Override
+	public OrderDTO getOrderItemByOrderId(Long orderId) {
+		log.info("validating the orderId :{}", orderId);
+		Order order = orderRepository.findById(orderId).orElseThrow(() -> {
+			log.warn("OrderId Not Found");
+			return new RecordNotFoundException("Order Not found against the orderId");
+		});
 		return orderMapper.getOrderDetail(order);
 	}
 
