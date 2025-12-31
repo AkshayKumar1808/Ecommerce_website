@@ -1,5 +1,7 @@
 package com.akshay.project.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,16 +20,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CartItem {
+public class CartItem extends EntityBase {
 
 	@EmbeddedId
 	private CartItemId id;
 
+	@JsonBackReference("cart-cartitem")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("cartId")
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 
+	@JsonBackReference("product-cart")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("productId")
 	@JoinColumn(name = "product_id")

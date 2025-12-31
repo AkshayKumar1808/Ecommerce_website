@@ -36,14 +36,18 @@ public class Products extends EntityBase {
 
 	private Double price;
 
+	private int quantity;
+
 	@JsonBackReference("category-products")
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Categories categoryId;
 
+	@JsonManagedReference("product-cart")
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartItem> cartProducts = new ArrayList<>();
 
+	@JsonManagedReference("product-orderitem")
 	@OneToMany(mappedBy = "product", orphanRemoval = true)
 	private List<OrderItem> orderItem = new ArrayList<>();
 }

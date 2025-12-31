@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.akshay.project.project.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,7 +30,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Order extends EntityBase {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,9 +39,10 @@ public class Order {
 	private Double totalAmount;
 
 	@Enumerated(EnumType.STRING)
-	private OrderStatus status;
+	@Column(nullable = false)
+	private OrderStatus status = OrderStatus.PENDING;
 
-	@JsonBackReference
+	@JsonBackReference("user-orders")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
@@ -47,6 +50,7 @@ public class Order {
 	@OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
 	private Address address;
 
+	@JsonManagedReference("order-orderitem")
 	@OneToMany(mappedBy = "order", orphanRemoval = true)
 	private List<OrderItem> orderItem = new ArrayList<>();
 }

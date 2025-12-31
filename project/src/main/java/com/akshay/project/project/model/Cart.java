@@ -3,6 +3,8 @@ package com.akshay.project.project.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,10 +33,12 @@ public class Cart extends EntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cartId;
 
+	@JsonManagedReference
 	@OneToOne
 	@JoinColumn(name = "user_id", unique = true)
 	private User user;
 
+	@JsonManagedReference("cart-cartitem")
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartItem> cartItem = new ArrayList<>();
 

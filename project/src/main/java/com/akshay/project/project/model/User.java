@@ -39,7 +39,7 @@ public class User extends EntityBase {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses = new ArrayList<>();
 
-	@JsonManagedReference
+	@JsonManagedReference("user-orders")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Order> orders = new ArrayList<>();
 

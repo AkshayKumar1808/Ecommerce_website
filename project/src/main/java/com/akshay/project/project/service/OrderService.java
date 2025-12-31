@@ -7,4 +7,6 @@ public interface OrderService {
 	OrderDTO addProductToOrder(Long userId, Long orderId, Long productId, int quantity);
 
 	OrderDTO getOrderItemByOrderId(Long orderId);
+
+	OrderDTO updateOrderQuantity(Long orderId, Long productId, int quantity);
 }

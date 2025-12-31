@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class OrderController {
 			return new ResponseEntity<>(orderService.addProductToOrder(userId, orderId, productId, quantity),
 					HttpStatus.OK);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -37,6 +39,17 @@ public class OrderController {
 		try {
 			return new ResponseEntity<>(orderService.getOrderItemByOrderId(orderId), HttpStatus.OK);
 		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PatchMapping("/{orderid}/product/{productid}")
+	public ResponseEntity<OrderDTO> updateOrderQuantity(@PathVariable("orderid") Long orderId,
+			@PathVariable("productid") Long productId, @RequestParam("quantity") int quantity) {
+		try {
+			return new ResponseEntity<>(orderService.updateOrderQuantity(orderId, productId, quantity), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

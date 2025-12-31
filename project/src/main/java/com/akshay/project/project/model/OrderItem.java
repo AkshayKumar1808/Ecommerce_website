@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class OrderItem extends EntityBase {
 
 	@EmbeddedId
 	private OrderItemId id;
@@ -31,12 +31,12 @@ public class OrderItem {
 	@Column(nullable = false)
 	private double unitPrice;
 
-	@JsonBackReference
+	@JsonBackReference("order-orderitem")
 	@MapsId("orderId")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Order order;
 
-	@JsonBackReference
+	@JsonBackReference("product-orderitem")
 	@MapsId("productId")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Products product;

@@ -71,6 +71,7 @@ public class ProductService implements CRUDOperation<Products> {
 		product.setProductImage(model.getProductImage());
 		product.setActive(model.isActive());
 		product.setCategoryId(category);
+		product.setQuantity(model.getQuantity());
 		try {
 			Products updateProduct = productRepository.save(product);
 			log.info("product update successfully");
